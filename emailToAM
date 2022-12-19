@@ -1,0 +1,115 @@
+function emailToAM_contract(){
+  // 變更合約通知
+  var sheet = SpreadsheetApp.getActiveSpreadsheet();
+  var ss = sheet.getSheetByName('變更合約總表');
+  var data1 = ss.getRange("C1:C").getValues();
+  
+  for(var i=data1.filter(String).length;i>=3;i=i-1){
+    var recipient = ss.getRange(i,43).getValue();
+
+    if(recipient != "" && ss.getRange(i,37).getValue()==""){
+      var company = ss.getRange(i,38).getValue();
+      var csmName = ss.getRange(i,3).getValue();
+
+      var now = new Date();
+
+      let subject ='';
+      subject +='inline｜';
+      subject += company;
+      subject += ' 抬頭統編資料變更申請' ;
+      let body = '';
+      body += '嗨 '
+      body += csmName
+      body += '\n\n'
+      body += '您的餐廳「'
+      body += company;
+      body += '」提出資料變更申請, 再麻煩您到「資料變更總表」的「變更合約總表」查看相關資料，謝謝！\n\n'
+      body += '資料變更總表連結：\n'
+      body += 'https://docs.google.com/spreadsheets/d/1zxIZbgUomTl4Gc5DruJlqwv9npIUusCwsbgtEyoL5IA/edit#gid=844545592'
+
+      body +='\n\n\nBest Regards,\n';
+      body +='CSM ops 發信機器人\n\n';
+
+      MailApp.sendEmail(recipient, subject, body);
+  
+      ss.getRange(i,37).setValue(now)
+    };
+  };
+};
+
+function emailToAM_RestoNameOrAcc(){
+  var sheet = SpreadsheetApp.getActiveSpreadsheet();
+  var ss_1 = sheet.getSheetByName('變更帳務資訊/餐廳名稱總表');
+  var data1 = ss_1.getRange("C1:C").getValues();
+  
+  for(var i=data1.filter(String).length;i>=3;i=i-1){
+    var recipient = ss_1.getRange(i,30).getValue();
+
+    if(recipient != "" && ss_1.getRange(i,26).getValue()==""){
+      var company = ss_1.getRange(i,27).getValue();
+      var csmName = ss_1.getRange(i,3).getValue();
+      var now = new Date();
+
+      let subject ='';
+      subject +='inline｜';
+      subject += company;
+      subject += ' 帳務資訊/餐廳名稱資料變更申請' ;
+      let body = '';
+      body += '嗨 '
+      body += csmName
+      body += '\n\n'
+      body += '您的餐廳「'
+      body += company;
+      body += '」提出資料變更申請, 再麻煩您到「資料變更總表」的「變更帳務資訊/餐廳名稱總表」查看相關資料，謝謝！\n\n'
+      body += '資料變更總表連結：\n'
+      body += 'https://docs.google.com/spreadsheets/d/1zxIZbgUomTl4Gc5DruJlqwv9npIUusCwsbgtEyoL5IA/edit#gid=844545592'
+
+
+      body +='\n\n\nBest Regards,\n';
+      body +='CSM ops 發信機器人\n\n';
+
+      MailApp.sendEmail(recipient, subject, body);
+  
+      ss_1.getRange(i,26).setValue(now)
+    };
+  };
+};
+
+function emailToAM_FOAcc(){
+  var sheet= SpreadsheetApp.getActiveSpreadsheet();
+  var ss_2= sheet.getSheetByName('變更外帶外送匯款帳戶總表');
+  var data1 = ss_2.getRange("C1:C").getValues();
+  
+  for(var i=data1.filter(String).length;i>=3;i=i-1){
+    var recipient = ss_2.getRange(i,30).getValue()
+
+    if(recipient != "" && ss_2.getRange(i,26).getValue()==""){  
+      var company = ss_2.getRange(i,27).getValue();
+      var csmName = ss_2.getRange(i,3).getValue();
+
+      var now = new Date();
+
+      let subject ='';
+      subject +='inline｜';
+      subject += company;
+      subject += ' FO帳戶資料變更申請';
+      let body = '';
+      body += '嗨 '
+      body += csmName
+      body += '\n\n'
+      body += '您的餐廳「'
+      body += company;
+      body += '」提出資料變更申請, 再麻煩您到「資料變更總表」的「變更外帶外送帳戶總表」查看相關資料，謝謝！\n\n'
+      body += '資料變更總表連結：\n'
+      body += 'https://docs.google.com/spreadsheets/d/1zxIZbgUomTl4Gc5DruJlqwv9npIUusCwsbgtEyoL5IA/edit#gid=844545592'
+      body += '\n\n'
+
+      body +='\n\n\nBest Regards,\n';
+      body +='CSM ops 發信機器人\n\n';
+
+      MailApp.sendEmail(recipient, subject, body);
+  
+    ss_2.getRange(i,26).setValue(now)
+    };
+  };
+};
