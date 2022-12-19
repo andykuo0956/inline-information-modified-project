@@ -1,0 +1,21 @@
+function onOpen() {
+  var spreadsheet = SpreadsheetApp.getActive();
+  var menuItems = [
+    {name: '自動寄送表單', functionName: 'sendForm'},
+  ];
+  spreadsheet.addMenu('ALL', menuItems);
+}
+
+function onOpen_2() {
+  var spreadsheet = SpreadsheetApp.getActive();
+  var menuItems = [
+    {name: '建立虛擬帳號', functionName: 'createVA'},
+    {name: '用印合約 pdf｜變更抬頭、統編、負責人、地址', functionName: 'contractGenerator_pdf'},
+    {name: '無用印合約 doc｜變更抬頭、統編、負責人、地址', functionName: 'contractGenerator_doc'},
+    {name: '用印合約 pdf｜僅變更地址', functionName: 'contractGenerator_loc_pdf'},
+    {name: '無用印合約 doc｜僅變更地址', functionName: 'contractGenerator_loc_doc'},
+    {name: 'email｜寄送附帶合約之信件', functionName: 'emailWithContract'},
+
+  ];
+  spreadsheet.addMenu('CSM/BD', menuItems);
+}
