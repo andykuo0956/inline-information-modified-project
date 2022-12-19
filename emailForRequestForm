@@ -1,0 +1,59 @@
+function sendForm() {
+  var sheet= SpreadsheetApp.getActiveSpreadsheet();
+  var ss1= sheet.getSheetByName('表單生成');
+  var lastRow=ss1.getLastRow();
+  var dataRange=ss1.getRange(1,1,lastRow,1);
+  var data=dataRange.getValues();
+
+  for(var i=2;i<=data.length;i=i+1 ){
+    var taxID = ss1.getRange(i,1).getValue()
+
+    if(taxID != ""){
+      var autoSend = ss1.getRange(i,12).getValue()
+
+      if(autoSend==true){
+        var timeStemp = ss1.getRange(i,13).getDisplayValue()
+
+        if(timeStemp==""){
+          var formLink = ss1.getRange(i,11).getDisplayValue()
+          var recipient = ss1.getRange(i,5).getValue();
+          var amEmail = ss1.getRange(i,15).getValue();
+          var companyName = ss1.getRange(i,18).getValue();
+          var now = new Date();
+
+          let subject ='';
+          subject += 'inline｜資料變更申請表單連結_';
+          subject += companyName
+
+          let body = '';
+          body += '尊敬的客戶您好，\n\n'
+          body += '這裡是 inline 客戶經營團隊，以下是您的資料變更申請表單專屬連結：\n'
+          body += formLink
+          body += '\n\n這裡有兩項注意事項，煩請您在填寫前詳細閱讀：\n'
+          body += '1. 一張表單僅供同一統編之餐廳進行資料變更，若您有不只一間公司欲進行變更，請填寫多張表單。\n\n'
+          body += '2. 表單中問題若有「inline 填入，勿更動」，代表已經由 inline 依照您的資訊先行填入，請勿自行更改，以免造成錯誤\n\n'
+
+          body += '若有任何問題也歡迎您聯絡 inline，謝謝\n'
+
+          body += '\n\nBest Regards,\n';
+          body += 'inline 客戶經營團隊\n';
+
+          MailApp.sendEmail({
+            to:
+              recipient,
+            replyTo:
+              amEmail,
+            subject:
+              subject,
+            body:
+              body,
+            cc:
+              amEmail
+          });
+
+          ss1.getRange(i,13).setValue(now)
+        };
+      };
+    };
+  };
+};
