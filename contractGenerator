@@ -1,0 +1,223 @@
+function contractGenerator_pdf() {
+
+  var sheet = SpreadsheetApp.getActiveSpreadsheet();
+  var ss = sheet.getSheetByName('變更合約總表');
+  var data1 = ss.getRange("C1:C").getValues();
+  
+  for(var i=data1.filter(String).length;i>=3;i=i-1){
+    Logger.log(i);
+    var bID = ss.getRange(i,1).getValue()
+
+    if(bID != ""){
+      var pdfLink = ss.getRange(i,20).getValue()
+
+      if(pdfLink == ""){
+      Logger.log(i);
+  
+        var document = DriveApp.getFileById('1DV4kesQiRJfq38GCtJMuU_9DiQju6bQUBAFdj-Z_E58').makeCopy();
+        var documentID = document.getId();
+
+        var o_CompanyName = ss.getRange(i,38).getValue();
+        var o_CompanyTaxID = ss.getRange(i,10).getValue();
+        var o_CompanyRP = ss.getRange(i,14).getValue();
+        var o_CompanyLoc = ss.getRange(i,16).getValue();
+
+        var n_CompanyName = ss.getRange(i,12).getValue();
+        var n_CompanyTaxID = ss.getRange(i,13).getValue();
+        var n_CompanyRP = ss.getRange(i,15).getValue();
+        var n_CompanyLoc = ss.getRange(i,17).getValue();
+
+        var dateToChange = ss.getRange(i,18).getDisplayValue();
+
+
+        var restoList = ss.getRange(i,5).getValue();
+        var restoNumber = ss.getRange(i,48).getValue();
+        var account = ss.getRange(i,19).getValue();
+
+        var startYear = ss.getRange(1,1).getValue();
+        var startMonth = ss.getRange(1,2).getValue();
+        var startDate = ss.getRange(1,3).getDisplayValue();
+
+        var now = new Date();
+        const dateString = Utilities.formatDate(now, 'GMT+0800', 'yyyy-MM-dd');
+
+        var docuName = DriveApp.getFileById(documentID).setName(o_CompanyName+'-合約移轉協議書'+dateString);
+        var doc = DocumentApp.openById(documentID);
+
+        var body1 = doc.getBody();
+      
+        body1.replaceText('{{O_CompanyName}}',o_CompanyName);
+        body1.replaceText('{{O_CompanyTaxID}}',o_CompanyTaxID);
+        body1.replaceText('{{O_CompanyRP}}',o_CompanyRP);
+        body1.replaceText('{{O_CompanyLoc}}',o_CompanyLoc);
+
+        body1.replaceText('{{restoList}}',restoList);
+        body1.replaceText('{{restoNumber}}',restoNumber);
+        body1.replaceText('{{dateToChange}} ',dateToChange);
+
+        if(n_CompanyName == "不需變更公司抬頭"){
+          body1.replaceText('{{N_CompanyName}}',o_CompanyName);
+        }
+        else{
+          body1.replaceText('{{N_CompanyName}}',n_CompanyName);
+        }
+
+        if(n_CompanyTaxID == "不需變更公司統編"){
+          body1.replaceText('{{N_CompanyTaxID}}',o_CompanyTaxID);
+        }
+        else{
+          body1.replaceText('{{N_CompanyTaxID}}',n_CompanyTaxID);
+        }
+        
+        if(n_CompanyRP == "不需變更公司負責人"){
+          body1.replaceText('{{N_CompanyRP}}',o_CompanyRP);
+        }
+        else{
+          body1.replaceText('{{N_CompanyRP}}',n_CompanyRP);
+        }
+        
+        if(n_CompanyLoc == "不需變更公司登記地址"){
+          body1.replaceText('{{N_CompanyLoc}}',o_CompanyLoc);
+        }
+        else{
+          body1.replaceText('{{N_CompanyLoc}}',n_CompanyLoc);
+        }
+
+        body1.replaceText('{{Account}}',account);
+
+        body1.replaceText('{{Start_Year}}',startYear);
+        body1.replaceText('{{Start_Month}}',startMonth);
+        body1.replaceText('{{Start_Date}}',startDate);
+        
+        doc.saveAndClose();
+
+        var URL=docuName.getUrl();
+
+        var folderID = "1iARHutl6MKWFeAfuBrmQGGVlVok-1cdQ";
+        var folder = DriveApp.getFolderById(folderID);
+
+        var pdf = doc.getAs('application/pdf');
+
+        var pdf_2 = folder.createFile(pdf);
+
+        var URL=pdf_2.getUrl();
+        ss.getRange(i,20).setValue(URL);
+
+        var pdfID = pdf_2.getId();
+        ss.getRange(i,46).setValue(pdfID);
+      };
+    };
+  };
+};
+
+function contractGenerator_doc() {
+
+  var sheet = SpreadsheetApp.getActiveSpreadsheet();
+  var ss = sheet.getSheetByName('變更合約總表');
+  var data1 = ss.getRange("C1:C").getValues();
+  
+  for(var i=data1.filter(String).length;i>=3;i=i-1){
+    Logger.log(i);
+    var bID = ss.getRange(i,1).getValue()
+
+    if(bID != ""){
+      var docLink = ss.getRange(i,21).getValue()
+
+      if(docLink == ""){
+      Logger.log(i);
+  
+        var document = DriveApp.getFileById('1sbcCOIZEA21C4JA0oHBW0BQCP8W0a1B2UZFhXOjIrf0').makeCopy();
+        var documentID = document.getId();
+
+        var o_CompanyName = ss.getRange(i,38).getValue();
+        var o_CompanyTaxID = ss.getRange(i,10).getValue();
+        var o_CompanyRP = ss.getRange(i,14).getValue();
+        var o_CompanyLoc = ss.getRange(i,16).getValue();
+
+        var n_CompanyName = ss.getRange(i,12).getValue();
+        var n_CompanyTaxID = ss.getRange(i,13).getValue();
+        var n_CompanyRP = ss.getRange(i,15).getValue();
+        var n_CompanyLoc = ss.getRange(i,17).getValue();
+
+        var dateToChange = ss.getRange(i,18).getValue();
+
+        var restoList = ss.getRange(i,5).getValue();
+        var restoNumber = ss.getRange(i,48).getValue();
+        var account = ss.getRange(i,19).getValue();
+
+        var startYear = ss.getRange(1,1).getValue();
+        var startMonth = ss.getRange(1,2).getValue();
+        var startDate = ss.getRange(1,3).getDisplayValue();
+
+        var now = new Date();
+        const dateString = Utilities.formatDate(now, 'GMT+0800', 'yyyy-MM-dd');
+
+        var docuName = DriveApp.getFileById(documentID).setName(o_CompanyName+'-合約移轉協議書_無用印版本'+dateString);
+        var doc = DocumentApp.openById(documentID);
+
+        var body1 = doc.getBody();
+      
+        body1.replaceText('{{O_CompanyName}}',o_CompanyName);
+        body1.replaceText('{{O_CompanyTaxID}}',o_CompanyTaxID);
+        body1.replaceText('{{O_CompanyRP}}',o_CompanyRP);
+        body1.replaceText('{{O_CompanyLoc}}',o_CompanyLoc);
+
+        body1.replaceText('{{restoList}}',restoList);
+        body1.replaceText('{{restoNumber}}',restoNumber);
+        body1.replaceText('{{dateToChange}} ',dateToChange);
+
+
+        if(n_CompanyName == "不需變更公司抬頭"){
+          body1.replaceText('{{N_CompanyName}}',o_CompanyName);
+        }
+        else{
+          body1.replaceText('{{N_CompanyName}}',n_CompanyName);
+        }
+
+        if(n_CompanyTaxID == "不需變更公司統編"){
+          body1.replaceText('{{N_CompanyTaxID}}',o_CompanyTaxID);
+        }
+        else{
+          body1.replaceText('{{N_CompanyTaxID}}',n_CompanyTaxID);
+        }
+        
+        if(n_CompanyRP == "不需變更公司負責人"){
+          body1.replaceText('{{N_CompanyRP}}',o_CompanyRP);
+        }
+        else{
+          body1.replaceText('{{N_CompanyRP}}',n_CompanyRP);
+        }
+        
+        if(n_CompanyLoc == "不需變更公司登記地址"){
+          body1.replaceText('{{N_CompanyLoc}}',o_CompanyLoc);
+        }
+        else{
+          body1.replaceText('{{N_CompanyLoc}}',n_CompanyLoc);
+        }
+
+        body1.replaceText('{{Account}}',account);
+
+        body1.replaceText('{{Start_Year}}',startYear);
+        body1.replaceText('{{Start_Month}}',startMonth);
+        body1.replaceText('{{Start_Date}}',startDate);
+        
+        doc.saveAndClose();
+
+        var docURL=docuName.getUrl();
+        ss.getRange(i,21).setValue(docURL);
+
+        var folderID = "1vr6ttuZXOTSYOxRCeQhdHzi3JLmJdrMA";
+        var folder = DriveApp.getFolderById(folderID);
+
+        //var pdf = doc.getAs('application/pdf');
+
+        folder.createFile(doc);
+
+        //var URL=pdf_2.getUrl();
+        //ss.getRange(i,20).setValue(URL);
+
+        ss.getRange(i,47).setValue(documentID);
+      };
+    };
+  };
+};
