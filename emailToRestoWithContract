@@ -1,0 +1,110 @@
+function emailWithContract() {
+
+  var sheet= SpreadsheetApp.getActiveSpreadsheet();
+  var ss= sheet.getSheetByName('變更合約總表');
+
+  var data1 = ss.getRange("C1:C").getValues();
+  //Logger.log("length"+data1.filter(String).length)
+  
+  for(var i=data1.filter(String).length;i>=2;i=i-1){
+    //Logger.log("i"+i)
+    //Logger.log(i + ss.getRange(i,48).getValue())
+    var autoSend = ss.getRange(i,22).getValue()
+
+    if(autoSend == true){
+      var emailTimestamp = ss.getRange(i,23).getValue()
+
+      if(emailTimestamp == ""){
+        var pdfURL = ss.getRange(i,20).getValue()
+
+        if(pdfURL == ""){
+          var amOrBD = ss.getRange(i,41).getValue();
+
+          if(amOrBD == "AM")
+          // Logger.log("AM" + i)
+
+            var recipient = ss.getRange(i,7).getValue();
+            var csmMail= ss.getRange(i,43).getValue();
+            var oldCompanyName = ss.getRange(i,38).getValue();
+            var documentID = ss.getRange(i,46).getValue();
+            var now = new Date();
+            var file = DriveApp.getFileById(documentID);
+            
+
+            // 物件導向程式設計，用於與 html 串接資料
+            var AMinformation = 
+                {
+                  name: ss.getRange(i,42).getValue(),
+                  phone: ss.getRange(i,45).getValue(),
+                };
+            
+            // 呼叫 emailWithContractTemp
+            var templ = HtmlService.createTemplateFromFile('emailWithContractTempAM');
+            templ.AMinformation = AMinformation;
+            var message = templ.evaluate().getContent();
+            
+            MailApp.sendEmail({
+              to:
+                recipient, 
+              replyTo:
+                'phoebe.lo@inline.tw,' + csmMail,
+              subject:
+                'inline｜'+ oldCompanyName +'  合約更改同意書',
+              htmlBody: 
+                message,
+              attachments: (file),
+              name: 'inline客戶經營團隊',
+              //bcc: "phoebe.lo@inline.tw",
+            });
+            
+            ss.getRange(i,23).setValue(now)
+        };
+
+        if(amOrBD == "BD"){
+            Logger.log("BD"+i)
+
+          var recipient= ss.getRange(i,7).getValue();
+          var bdMmail= ss.getRange(i,43).getValue();
+          var oldCompanyName = ss.getRange(i,38).getValue();
+          var documentID = ss.getRange(i,46).getValue();
+          var now = new Date();
+          var file = DriveApp.getFileById(documentID);
+          
+
+          // 物件導向程式設計，用於與 html 串接資料
+          var AMinformation = 
+              {
+                name: ss.getRange(i,42).getValue(),
+                phone: ss.getRange(i,45).getValue(),
+              };
+          
+          // 呼叫 emailWithContractTemp
+          var templ = HtmlService.createTemplateFromFile('emailWithContractTempBD');
+          templ.AMinformation = AMinformation;
+          var message = templ.evaluate().getContent();
+
+        
+          
+
+          MailApp.sendEmail({
+            to:
+              recipient, 
+            replyTo:
+              'phoebe.lo@inline.tw,'+ bdMmail,
+            subject:
+              'inline｜'+ oldCompanyName +' 合約更改同意書',
+            htmlBody: 
+              message,
+            attachments: (file),
+            name: 'inline 客戶經營團隊',
+            //bcc: "phoebe.lo@inline.tw",
+          });
+
+          
+          ss.getRange(i,23).setValue(now)
+        
+        };
+      };  
+    };
+  };
+};
