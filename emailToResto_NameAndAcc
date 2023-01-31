@@ -1,0 +1,86 @@
+function emailToResto_NameAndAcc() {
+  var sheet= SpreadsheetApp.getActiveSpreadsheet();
+  var ss= sheet.getSheetByName('變更帳務資訊/餐廳名稱總表');
+  var data1 = ss.getRange("C1:C").getValues();
+  
+  for(var i=data1.filter(String).length;i>=2;i=i-1){
+    var bID = ss.getRange(i,1).getValue()
+
+    if(bID != ""){
+      var emailTimestamp = ss.getRange(i,18).getValue()
+
+      if(emailTimestamp == ""){
+        var recipient= ss.getRange(i,6).getValue();
+        var company = ss.getRange(i,27).getValue();
+        var amName = ss.getRange(i,29).getValue();
+        var amPhone = ss.getRange(i,31).getValue();
+
+        var o_RestoNameList = ss.getRange(i,11).getValue();
+        var n_RestoNameList = ss.getRange(i,12).getValue();
+
+        var n_AccName = ss.getRange(i,13).getValue();
+        var n_AccPhone = ss.getRange(i,14).getValue();
+        var n_AccMail = ss.getRange(i,15).getValue();
+        var n_AccLoc = ss.getRange(i,16).getValue();
+        var now = new Date();
+
+        let subject ='';
+        subject +='inline｜';
+        subject += company;
+        subject += ' 資料變更_帳務資訊或餐廳名稱';
+
+        let body = '';
+        body += '尊敬的客戶您好，\n\n'
+        body += '這裡是 inline 客戶經營團隊，我司已接獲您的資料變更申請。\n'
+        body += '以下為資料變更細項：\n\n'
+
+        if(n_RestoNameList != ""){
+          body += '變更前之餐廳名稱：\n'
+          body += o_RestoNameList
+          body += '\n'
+          body += '變更後之餐廳名稱：\n'
+          body += n_RestoNameList
+          body += '\n\n'
+        };
+        
+        if(n_AccName != "不需變更帳務聯絡人姓名" && n_AccName != ""){
+          body += '變更後帳務聯絡人姓名：\n'
+          body += n_AccName
+          body += '\n\n'
+        };
+
+        if(n_AccPhone != "不需變更帳務聯絡人電話" && n_AccPhone != ""){
+          body += '變更後帳務聯絡人電話：\n'
+          body += n_AccPhone
+          body += '\n\n'
+        };
+
+        if(n_AccMail != "不需變更帳務聯絡人 Email" && n_AccMail != ""){
+          body += '變更後帳務聯絡人 Email：\n'
+          body += n_AccMail
+          body += '\n\n'
+        };
+
+        if(n_AccLoc != "不需變更合約寄送地址" && n_AccLoc != ""){
+          body += '變更後合約寄送地址：\n'
+          body += n_AccLoc
+          body += '\n\n'
+        };
+        
+        body += '\n'
+        body +='若貴公司有其它額外想討論，歡迎詢問：';
+        body += amName
+        body += '，電話：'
+        body += amPhone
+        body +='\n\n\nBest Regards,\n';
+        body +='inline 客戶經營團隊\n\n';
+
+    
+
+        MailApp.sendEmail(recipient,subject, body,{bcc: "phoebe.lo@inline.tw"});
+    
+        ss.getRange(i,18).setValue(now)
+      };
+    };
+  };
+};
