@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <body>
+    <div class="im">尊敬的客戶您好，<br>
+      <br>
+        這裡是inline業務團隊，我司已接獲您的資料變更申請。<br>
+        附件為合約更改同意書電子檔。
+      <br>
+      <br>
+        <b style="background-color: rgb(255, 255, 0);">
+          煩請於一週內用印大小章、拍照或掃描電子檔
+        </b>
+      <br>
+      <br>
+        <br>
+        <b style="background-color: rgb(255, 255, 0);font-size:18px;">
+          並請直接回覆此信件。
+        </b>
+      <br>  
+  
+      <br>
+      <br>
+        Best Regards,<br>
+        inline業務團隊<br>
+      <br>
+      <br>
+        業務經理：<?= AMinformation.name ?><br>
+        電話：<?=AMinformation.phone?><br>
+      <br>
+    </div>
+  </body>
+</html>
