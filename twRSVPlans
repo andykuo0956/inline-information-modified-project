@@ -1,0 +1,65 @@
+function twRSVPlans() {
+  var spreadSheet = SpreadsheetApp.getActiveSpreadsheet();
+  var rdResponse = spreadSheet.getSheetByName('RD_Response');
+  var changing_TWRSVPlans = spreadSheet.getSheetByName('Changing_TWRSVPlans');
+
+
+  var data = rdResponse.getRange("B1:B").getValues();
+  var currentRow = data.filter(String).length;
+
+  for(i=2; i<=currentRow; i=i+1){
+    var toTWRSVPlans = rdResponse.getRange(i,36).getValue()
+
+    if(toTWRSVPlans == true){
+      continue
+    }
+    
+    else{
+      var requestID = rdResponse.getRange(i,3).getValue()
+      var branchIDString = rdResponse.getRange(i,6).getValue()
+      var branchIDList = branchIDString.split(",")
+      var branchNumber = rdResponse.getRange(i,5).getValue()
+      var loopNumber = branchNumber*5
+      f_branchIDArray(changing_TWRSVPlans, loopNumber, branchIDList)
+      f_requestIDArray(changing_TWRSVPlans, loopNumber, requestID)
+      rdResponse.getRange(i,36).setValue(true)
+    }
+  }
+}
+
+function f_branchIDArray(changing_TWRSVPlans, loopNumber, branchIDList){
+  var branchIDArray = [[]]
+      
+  for(j=0; j<=loopNumber-1; j=j+1){
+    Logger.log("J"+j)
+    f = parseInt(j/5)
+    Logger.log(typeof f)
+
+    branchIDArray[j] = [branchIDList[f]]
+    Logger.log("j/5"+j/5)
+    Logger.log("branchIDArray"+branchIDArray)
+  };
+
+  var data2 = changing_TWRSVPlans.getRange("A1:A").getValues();
+  var k = data2.filter(String).length
+  var range = changing_TWRSVPlans.getRange(1+k,1,branchIDArray.length,1);
+  Logger.log(typeof branchIDArray)
+  Logger.log("1+k"+k)
+  Logger.log("branchIDArray.length"+branchIDArray.length)
+  range.setValues(branchIDArray);
+}
+
+function f_requestIDArray(changing_TWRSVPlans, loopNumber, requestID){
+  var requestIDArray = [[]]
+      
+  for(j=0; j<=loopNumber-1; j=j+1){
+    Logger.log("J"+j)
+    requestIDArray[j] = [requestID];
+    Logger.log("requestIDArray"+requestIDArray)
+  };
+
+  var data2 = changing_TWRSVPlans.getRange("AU1:AU").getValues();
+  var k = data2.filter(String).length
+  var range = changing_TWRSVPlans.getRange(1+k,47,requestIDArray.length,1);
+  range.setValues(requestIDArray);
+}
