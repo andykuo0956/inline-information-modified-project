@@ -1,0 +1,93 @@
+function MailReceive() {
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var sheet = ss.getSheetByName('變更合約總表');
+var lastRow = sheet.getLastRow();
+var dataRange = sheet.getRange(1,1,lastRow,1);
+var data = dataRange.getValues();
+var threads = GmailApp.getInboxThreads();
+var subjects
+
+// var month = new Date().getMonth();
+// var date = new Date().getDate();
+// var year = new Date().getFullYear();
+// var time1 = new Date(year, month, date, 0, 0, 0).getTime();
+// var time2 = time1 - 86400000*4;
+// var query = "newer:" + time2/1000 + " older:"  + time1/1000 + " in:inbox";
+var query = "newer_than:2d";
+var conversations = GmailApp.search(query);
+var count = conversations.length-1;
+// Logger.log(month);
+// Logger.log(date);
+// Logger.log(year);
+// Logger.log(time1);
+// Logger.log(time2);
+// Logger.log(query);
+// Logger.log(conversations);
+// Logger.log(count);
+
+for (var i = 0; i < count; i++) {             
+  threads[i].getFirstMessageSubject();
+  subjects += threads[i].getFirstMessageSubject();
+// 1. 擷取inbox之中近四天email之subject (迴圈)          
+// 2. 將這些subject全部串成一段並存起來為subjects
+}
+Logger.log(subjects);
+for(var i=2;i <= data.length;i=i+1){ 
+
+  if ((sheet.getRange(i,23).getValue() != "" ) && (sheet.getRange(i,29).getValue() != true) && (sheet.getRange(i,25).getValue() == "" ) && (sheet.getRange(i,26).getValue() == "" )){
+    let subjectB ='';
+    subjectB +='inline｜';
+    subjectB += sheet.getRange(i,38).getValue();
+    subjectB += '  合約更改同意書' ;
+    if(subjects.indexOf(subjectB) <=-1){ //若subjects裡面不包含回信主旨
+      sheet.getRange(i,26).setValue(true)
+    }else{  //若subjects裡面包含回信主旨
+      sheet.getRange(i,25).setValue(true)
+    }
+    }
+}
+}
+// 3. 比對subjects中有無match到原公司抬頭(E欄)x列，若有，在對應的AG欄x列打勾(代表有收到) -> 跑迴圈，若AG欄已經有打勾的話就略過
+
+function MailReceive2() {
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var sheet = ss.getSheetByName('變更合約總表');
+var lastRow = sheet.getLastRow();
+var dataRange = sheet.getRange(1,1,lastRow,1);
+var data = dataRange.getValues();
+var threads = GmailApp.getInboxThreads();
+var subjects
+// var month = new Date().getMonth();
+// var date = new Date().getDate();
+// var year = new Date().getFullYear();
+// var time1 = new Date(year, month, date, 0, 0, 0).getTime();
+// var time2 = time1 - 86400000*3;
+// var query = "newer:" + time2/1000 + " older:"  + time1/1000 + " in:inbox";
+var query = "newer_than:3d";
+var conversations = GmailApp.search(query);
+var count = conversations.length-1;
+
+
+for (var i = 0; i < count; i++) {
+  threads[i].getFirstMessageSubject();
+  subjects += threads[i].getFirstMessageSubject();
+// 1. 擷取inbox之中近三天的email之subject (迴圈)            
+// 2. 將這些subject全部串成一段並存起來為subjects
+}
+Logger.log(subjects);
+for(var i=2;i <= data.length;i=i+1){ 
+
+  if ((sheet.getRange(i,26).getValue() == true ) && (sheet.getRange(i,29).getValue() != "") && (sheet.getRange(i,27).getValue() == "" ) && (sheet.getRange(i,28).getValue() == "" )){
+    let subjectB ='';
+    subjectB +='inline｜';
+    subjectB += sheet.getRange(i,38).getValue();
+    subjectB += '  合約更改同意書' ;
+    if(subjects.indexOf(subjectB) <=-1){ //若subjects裡面不包含回信主旨
+      sheet.getRange(i,28).setValue(true)
+    }else{  //若subjects裡面包含回信主旨
+      sheet.getRange(i,27).setValue(true)
+    }
+    }
+}
+}
+// 3. 比對subjects中有無match到原公司抬頭(E欄)x列，若有，在對應的AJ欄x列打勾(代表有收到) -> 跑迴圈，若AJ欄已經有打勾的話就略過
