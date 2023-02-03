@@ -1,0 +1,62 @@
+function newLoc() {
+  var spreadSheet = SpreadsheetApp.getActiveSpreadsheet();
+  var restoNewList = spreadSheet.getSheetByName('餐廳名稱列表');
+  var rdResponse = spreadSheet.getSheetByName('RD_Response');
+
+  var data = restoNewList.getRange("A1:A").getValues();
+  var currentRow = data.filter(String).length;
+
+  var data1 = rdResponse.getRange("A1:A").getValues();
+  var currentRow1 = data1.filter(String).length;
+
+  restoNewList.getRange("C2:C").clearContent();
+  
+  for(i=2; i<= currentRow; i=i+1){
+    Logger.log("i"+i)
+    var newRestoName = restoNewList.getRange(i,3).getValue();
+
+    if(newRestoName != ""){
+      continue
+    }
+    else{
+      var requestID = restoNewList.getRange(i,4).getValue();
+
+      for(j=2; j<= currentRow; j=j+1){
+        Logger.log("j"+j)
+        var requestID_response = rdResponse.getRange(j,3).getValue();
+        Logger.log(requestID_response)
+        Logger.log(requestID)
+        var restoString = rdResponse.getRange(j,20).getValue();
+        Logger.log(restoString)
+
+        if(requestID_response == requestID){
+          
+
+          if(restoString == ""){
+            restoNewList.getRange(i,3).setValue(restoNewList.getRange(i,2).getValue())
+            Logger.log("restoString")
+          }
+          else{
+            var newRestoArray = restoString.split(",")
+            Logger.log(newRestoArray)
+            for(eachResto=0; eachResto <= newRestoArray.length; eachResto++){
+              Logger.log("eachResto"+eachResto)
+              restoNewList.getRange(i+eachResto,3).setValue(newRestoArray[eachResto])
+            }
+          }
+        }
+      }
+    }
+  }
+  // 如果 newRestoName 是空的，那就補上原本的名字
+  for(i=2; i<= currentRow; i=i+1){
+    var newRestoName = restoNewList.getRange(i,3).getValue();
+
+    if(newRestoName != ""){
+      continue
+    }
+    else{
+      restoNewList.getRange(i,3).setValue(restoNewList.getRange(i,2).getValue())
+    }
+  }
+}
